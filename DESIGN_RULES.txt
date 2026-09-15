@@ -1,6 +1,1 @@
-PROTOTYPE 1.1 LOCKED RULES
-INQUIRY LOOP: Mission → investigate → collect evidence → discuss → answer → unlock decision → consequence → explain.
-MAP ALIGNMENT: background, cities, routes, ships, commodities, and event markers live inside ONE transformed worldstage. Camera transforms the worldstage only.
-FOCUSED CAMERA: lesson uses stable predefined views rather than free pan/zoom.
-HISTORICAL INTEGRITY: documented history is distinct from student counterfactuals.
-LEARNING: every action must serve a clear cause/effect learning objective.
+1.2: One SVG coordinate system for map, cities, routes, future ships and commodities. Evidence Book is persistent. Mission loop: investigate → collect evidence → claim → decision → consequence. Historical integrity remains mandatory.
