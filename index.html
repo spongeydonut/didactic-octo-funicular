@@ -1,266 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Spice Race — Prototype 0.1</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Spice Race 0.5</title>
 <style>
-:root{
-  --bg:#f4efe4; --paper:#fffdf7; --ink:#201d18; --muted:#6b6255;
-  --line:#d8cdbb; --accent:#7b4f24; --good:#2e6b4f; --warn:#9a5b14; --bad:#8a3434;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink)}
-main{max-width:980px;margin:auto;padding:24px}
-.header{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
-h1{margin:.1rem 0;font-size:clamp(2rem,6vw,4rem);letter-spacing:.03em}
-.subtitle{color:var(--muted);font-size:1.05rem}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;margin:18px 0}
-.stat{background:var(--paper);border:1px solid var(--line);padding:12px;border-radius:10px}
-.stat b{display:block;font-size:1.35rem}
-.progress{height:10px;border-radius:10px;background:#e2d8c8;overflow:hidden;margin:8px 0 22px}
-.progress span{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;margin:14px 0}
-.kicker{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:bold}
-h2{font-size:1.65rem;margin:.35rem 0 .7rem}
-p,li{font-size:1.05rem;line-height:1.55}
-.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{font:inherit;font-weight:700;padding:13px 14px;border-radius:10px;border:1px solid #b9aa95;background:#f8f2e8;color:var(--ink);cursor:pointer;text-align:left}
-button:hover{border-color:var(--accent)}
-button:focus{outline:3px solid #d6b88f;outline-offset:2px}
-button.primary{background:var(--accent);color:white;border-color:var(--accent);text-align:center}
-button.secondary{text-align:center}
-button:disabled{opacity:.55;cursor:not-allowed}
-.event{border-left:5px solid var(--accent);padding-left:14px}
-.good{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;margin:2px 3px;font-size:.85rem;background:#faf6ed}
-.route{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:center;margin:16px 0}
-.route div{padding:9px 6px;text-align:center;background:#f5efe5;border:1px solid var(--line);border-radius:9px;font-size:.86rem}
-.arrow{text-align:center;color:var(--muted)}
-textarea,input[type="text"]{width:100%;font:inherit;font-size:1rem;padding:12px;border:1px solid #b9aa95;border-radius:9px;background:white}
-textarea{min-height:105px;resize:vertical}
-.small{font-size:.9rem;color:var(--muted)}
-.hidden{display:none}
-.debrief{border:2px solid var(--accent)}
-table{width:100%;border-collapse:collapse;margin:12px 0}
-th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left}
-th:last-child,td:last-child{text-align:right}
-@media(max-width:700px){
-  .stats{grid-template-columns:1fr 1fr}.choice-grid{grid-template-columns:1fr}.route{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}
-}
-</style>
-</head>
-<body>
+:root{--ink:#efe2bd;--navy:#101b23;--panel:#182732;--gold:#d4a94d;--paper:#eadbb8;--dark:#1b211f}
+*{box-sizing:border-box}body{margin:0;background:#0d151b;color:var(--ink);font-family:Georgia,serif}button{font:inherit}
+header{display:grid;grid-template-columns:1fr repeat(5,minmax(85px,120px));gap:6px;padding:8px;background:#101a22;border-bottom:2px solid #6c5731;position:sticky;top:0;z-index:10}
+.brand{font-size:1.5rem;font-weight:800;color:#f1d58d}.metric{background:#18242c;border:1px solid #4a5960;border-radius:6px;padding:5px;text-align:center;font-size:.72rem}.metric b{display:block;font-size:1.1rem}
+main{max-width:1500px;margin:auto;padding:8px}.grid{display:grid;grid-template-columns:210px minmax(0,1fr) 285px;gap:8px}.panel{background:var(--panel);border:1px solid #596068;border-radius:8px;padding:8px}
+h2,h3{margin:.3rem 0 .6rem;color:#f0d28b}.nation{width:100%;text-align:left;padding:9px;margin:4px 0;background:#172936;border:1px solid #5b6870;color:white;border-radius:6px;cursor:pointer}.nation.active{border:2px solid #5eb8df;background:#173b52}.nation small{display:block;color:#c7d0d3}
+.map{position:relative;overflow:hidden;border:2px solid #67562f;border-radius:8px;background:#31566a}.map img{display:block;width:100%;height:auto}.mapnote{position:absolute;left:8px;bottom:8px;background:#101820d9;padding:5px 8px;border-radius:5px;font-size:.7rem}
+.event{background:var(--paper);color:var(--dark);border-radius:7px;padding:10px;min-height:190px}.event .yr{font-weight:800;color:#7d4d22}.event h2{color:#342717}.effects{font-family:system-ui,sans-serif;font-size:.84rem}
+.actions{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}.action{background:#eadbb8;color:#211d16;border:2px solid #6d5b38;border-radius:7px;padding:7px;cursor:pointer;min-height:105px;text-align:left}.action b{display:block;font-size:1rem}.action span{font-size:.72rem}.action:hover{transform:translateY(-1px)}
+.adviser{display:grid;grid-template-columns:80px 1fr;gap:8px;margin-top:8px;background:#1a242a;border:1px solid #655839;padding:8px;border-radius:8px}.portrait{font-size:3rem;display:flex;align-items:center;justify-content:center;background:#2c3740;border-radius:6px}.speech{background:#eadbb8;color:#25211b;padding:8px;border-radius:7px;font-size:.82rem}
+.market{width:100%;border-collapse:collapse;font-size:.78rem}.market th,.market td{padding:4px;border-bottom:1px solid #6c624c;text-align:right}.market th:first-child,.market td:first-child{text-align:left}.world{font-family:system-ui,sans-serif;font-size:.72rem}.world div{border-bottom:1px solid #3e4b52;padding:5px 0}.log{font-family:system-ui,sans-serif;font-size:.7rem;max-height:145px;overflow:auto}.log div{padding:4px;border-bottom:1px solid #39464d}
+.layers{display:flex;gap:5px;justify-content:center;margin-top:7px}.layers button{background:#1c2b35;color:#eee;border:1px solid #59676e;border-radius:5px;padding:5px 10px}.layers button.on{background:#356a82}
+
+.hotspot{position:absolute;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:2px solid #f7df92;background:#9b3f31;box-shadow:0 0 0 4px #10182088;cursor:pointer;z-index:3}
+.hotspot:hover,.hotspot:focus{width:23px;height:23px;outline:2px solid #fff}
+.hotspot span{position:absolute;left:14px;top:-8px;white-space:nowrap;background:#101820d9;color:white;padding:2px 5px;border-radius:4px;font-size:.68rem;pointer-events:none}
+.routeLine{position:absolute;height:3px;background:#e5c878;transform-origin:left center;opacity:.72;z-index:2;pointer-events:none;border-radius:3px}
+.routeLine.eu{background:#e18458}
+.routeLine.hiddenLayer{display:none}.hotspot.hiddenLayer{display:none}
+.popup{position:absolute;right:10px;top:10px;width:min(310px,48%);background:#efe0bb;color:#211e18;border:2px solid #6b5836;border-radius:8px;padding:10px;z-index:5;box-shadow:0 5px 18px #0008}
+.popup h3{color:#332717;margin:.1rem 0}.popup button{background:#243642;color:white;border:1px solid #56666f;border-radius:5px;padding:6px 8px;cursor:pointer}
+.routeinfo{font-family:system-ui,sans-serif;font-size:.75rem;margin-top:5px}
+
+
+.integrity{background:#2a2115;border:1px solid #9a7a3c;color:#f2dfaa;padding:7px 10px;border-radius:7px;margin-bottom:8px;font:600 .76rem system-ui,sans-serif}
+.record{margin-top:8px;border-top:1px solid #9b8b68;padding-top:8px}.record button{background:#243642;color:#fff;border:1px solid #596b75;border-radius:5px;padding:6px 8px;cursor:pointer}
+.recordbox{margin-top:7px;background:#fff8e8;border:1px solid #b9a77c;padding:8px;border-radius:6px;font: .78rem system-ui,sans-serif}
+.actual{color:#416a4c;font-weight:800}.counter{color:#7a4a2c;font-weight:800}
+
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.actions{grid-template-columns:repeat(3,1fr)}header{grid-template-columns:1fr repeat(2,100px)}.metric:nth-of-type(n+3){display:none}}
+</style></head><body>
+<header><div class="brand">✦ THE SPICE RACE <small style="display:block;font-size:.6rem;font-weight:400">TRADE • POWER • PEOPLE • A CONNECTED WORLD</small></div>
+<div class="metric">YEAR<b id="year">1450</b></div><div class="metric">💰 DUCATS<b id="money">120</b></div><div class="metric">⛵ NAVY<b id="navy">8</b></div><div class="metric">🧭 KNOWLEDGE<b id="know">10</b></div><div class="metric">👑 INFLUENCE<b id="power">12</b></div></header>
 <main>
-<div class="header">
-  <div>
-    <div class="kicker">Partner Simulation • Prototype 0.1</div>
-    <h1>The Spice Race</h1>
-    <div class="subtitle">Europe, trade, competition, and the road to empire</div>
-  </div>
-  <div class="small">Work with your partner. Discuss every choice before clicking.</div>
+<div class="integrity">HISTORICAL INTEGRITY MODE: established events follow the historical record. Your decisions change your nation's strategy and create labeled counterfactual outcomes; they do not rewrite unrelated world events.</div>
+<div class="grid">
+<aside class="panel"><h3>Choose Your Nation</h3><button class="nation active" data-n="Portugal">🇵🇹 Portugal<small>Explorers by necessity.</small></button><button class="nation" data-n="Castile">🏰 Crown of Castile<small>Large Iberian kingdom; dynastic union with Aragon lies ahead.</small></button><button class="nation" data-n="Venice">🦁 Venice<small>Merchants of the Mediterranean.</small></button><button class="nation" data-n="England">🏴 Kingdom of England<small>Atlantic position; internal conflict will constrain the crown.</small></button><button class="nation" data-n="France">⚜ Kingdom of France<small>Recovering from the Hundred Years’ War.</small></button>
+<h3>World Powers</h3><div id="world" class="world"></div></aside>
+<section>
+<div class="map" id="map">
+<img src="spice-race-world.png" alt="Original illustrated strategy-game world map showing Europe, Africa and Asia with major trade routes and physical geography">
+<div id="routes"></div>
+<button class="hotspot" data-port="Lisbon" style="left:36.4%;top:34.5%" aria-label="Lisbon"><span>Lisbon</span></button>
+<button class="hotspot" data-port="Venice" style="left:44.2%;top:35.7%" aria-label="Venice"><span>Venice</span></button>
+<button class="hotspot" data-port="Constantinople" style="left:51.7%;top:37.2%" aria-label="Constantinople"><span>Constantinople</span></button>
+<button class="hotspot" data-port="Cairo" style="left:51.2%;top:48.2%" aria-label="Cairo"><span>Cairo</span></button>
+<button class="hotspot" data-port="Zanzibar" style="left:55.0%;top:69.0%" aria-label="Zanzibar"><span>Zanzibar</span></button>
+<button class="hotspot" data-port="Calicut" style="left:68.0%;top:57.0%" aria-label="Calicut"><span>Calicut</span></button>
+<button class="hotspot" data-port="Malacca" style="left:83.0%;top:61.5%" aria-label="Malacca"><span>Malacca</span></button>
+<button class="hotspot" data-port="Canton" style="left:88.0%;top:44.5%" aria-label="Canton"><span>Canton</span></button>
+<div class="popup" id="popup" hidden></div>
+<div class="mapnote">Click a port to inspect its market, political context, and connections.</div>
 </div>
-
-<div class="stats" aria-live="polite">
-  <div class="stat">💰 Treasury<b id="treasury">100</b></div>
-  <div class="stat">📦 Trade Access<b id="trade">10</b></div>
-  <div class="stat">👑 Power<b id="power">10</b></div>
-  <div class="stat">⚖️ Human Cost<b id="human">0</b></div>
-</div>
-<div class="progress"><span id="bar"></span></div>
-
-<section id="screen" class="card"></section>
-<section id="log" class="card hidden"><div class="kicker">Your decisions</div><div id="logText"></div></section>
-</main>
+<div class="layers"><button class="on" id="physicalLayer">🏔 Physical</button><button class="on" id="politicalLayer">⚑ Political</button><button class="on" id="tradeLayer">••• Trade</button><button class="on" id="resourceLayer">🪙 Resources</button></div>
+<div class="adviser"><div class="portrait">👑</div><div class="speech" id="speech">Your Majesty, Europe wants the luxuries of Asia. Our merchants can buy through established networks—or we can gamble on finding greater access. Discuss with your partner before acting.</div></div>
+<div class="actions" id="actions"></div>
+</section>
+<aside class="panel"><div class="event" id="event"></div><h3>Commodity Markets</h3><table class="market"><thead><tr><th>Good</th><th>Asia</th><th>Europe</th></tr></thead><tbody id="market"></tbody></table><h3>Chronicle</h3><div class="log" id="log"></div></aside>
+</div></main>
 <script>
-(function(){
-const root=document;
-const s={step:0,treasury:100,trade:10,power:10,human:0,knowledge:0,choices:[],reflection:""};
-const el=id=>root.getElementById(id);
-function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
-function update(){
-  el("treasury").textContent=s.treasury;
-  el("trade").textContent=s.trade;
-  el("power").textContent=s.power;
-  el("human").textContent=s.human;
-  el("bar").style.width=(s.step/12*100)+"%";
-}
-function log(t){s.choices.push(t);el("log").classList.remove("hidden");el("logText").innerHTML=s.choices.map((x,i)=>"<p><b>"+(i+1)+".</b> "+x+"</p>").join("")}
-function set(html){el("screen").innerHTML=html;update();wire()}
-function btn(id,fn){const b=el(id); if(b)b.addEventListener("click",fn)}
-function next(){s.step++; render()}
-function consequence(msg,delta,choice){
-  if(delta){s.treasury+=delta.t||0;s.trade=clamp(s.trade+(delta.tr||0),0,100);s.power=clamp(s.power+(delta.p||0),0,100);s.human=clamp(s.human+(delta.h||0),0,100)}
-  log(choice);
-  set('<div class="kicker">Consequence</div><h2>'+msg.title+'</h2><p>'+msg.body+'</p><p class="small">'+msg.note+'</p><button id="continue" class="primary">Continue →</button>');
-  btn("continue",next)
-}
-function wire(){
-  btn("start",next);
-}
+(()=>{
+let y=1450,nation="Portugal",S={money:120,navy:8,know:10,power:12,human:0,trade:12};
+const W={"Ming China":{e:92,p:88,s:82},"Gujarat / W. India":{e:88,p:72,s:72},"Ottoman Empire":{e:76,p:82,s:77},"Malacca Sultanate":{e:72,p:55,s:76},"Swahili city-states":{e:62,p:45,s:70}};
+const events={
+1453:{title:"CONSTANTINOPLE FALLS",summary:"Mehmed II captures Constantinople, ending the Byzantine Empire. Ottoman control of the city changes the strategic balance, but Eurasian and Mediterranean commerce continues.",effects:"Ottoman power ↑ • political control changes • trade relationships adapt",actual:"On 29 May 1453, Ottoman forces under Mehmed II captured Constantinople. The Byzantine Empire ended. The conquest did not simply 'close' Asian trade to Europe.",simplified:"The game represents a complex network of tolls, diplomacy, merchant communities and routes with broad trade-access indicators.",sources:"Encyclopaedia Britannica; Cambridge histories of the Ottoman Mediterranean."},
+1469:{title:"ISABELLA OF CASTILE MARRIES FERDINAND OF ARAGON",summary:"The marriage creates a dynastic partnership between two crowns. Castile and Aragon do not instantly become a single centralized state.",effects:"Iberian dynastic cooperation ↑",actual:"Isabella and Ferdinand married in 1469. Each crown retained its own institutions, laws and political structures.",simplified:"The game gradually unlocks a joint Spanish strategic identity rather than declaring a modern Spain in 1469.",sources:"Encyclopaedia Britannica; standard histories of the Catholic Monarchs."},
+1488:{title:"DIAS ROUNDS THE CAPE",summary:"Bartolomeu Dias rounds southern Africa, demonstrating that Atlantic navigation can connect toward the Indian Ocean.",effects:"Portuguese route knowledge ↑",actual:"Dias rounded the Cape of Good Hope in 1488, though he did not continue to India.",simplified:"Decades of Portuguese Atlantic and African exploration are compressed into navigation and knowledge statistics.",sources:"Encyclopaedia Britannica; histories of Portuguese expansion."},
+1492:{title:"GRANADA FALLS • COLUMBUS CROSSES THE ATLANTIC",summary:"Granada falls to Castile and Aragon. Columbus's expedition reaches Caribbean islands inhabited by Indigenous peoples while seeking a westward route to Asia.",effects:"Castilian Atlantic access ↑ • Indigenous encounter begins",actual:"Columbus reached the Caribbean in October 1492; he did not reach Asia and did not discover an uninhabited continent.",simplified:"The enormous diversity of Indigenous American societies is not yet simulated in this prototype.",sources:"Library of Congress; Encyclopaedia Britannica."},
+1494:{title:"TREATY OF TORDESILLAS",summary:"Castile and Portugal agree to divide claims to lands outside Europe along a papally sanctioned line, without consent from the peoples inhabiting those lands.",effects:"Iberian overseas rivalry formalized",actual:"The 1494 treaty adjusted the line established after papal bulls of 1493.",simplified:"The prototype does not yet simulate competing Indigenous sovereignty or other European rejection of Iberian claims.",sources:"Encyclopaedia Britannica; Library of Congress."},
+1498:{title:"DA GAMA REACHES CALICUT",summary:"Vasco da Gama reaches the Malabar Coast and enters a wealthy, sophisticated Indian Ocean commercial system.",effects:"Portuguese direct access ↑ • control remains limited",actual:"Da Gama reached Calicut in 1498. Portuguese goods initially impressed local markets far less than the Asian goods Europeans sought.",simplified:"Calicut, Gujarat, the Deccan, Arab merchants and wider Indian Ocean networks are represented through selected nodes.",sources:"Encyclopaedia Britannica; Metropolitan Museum histories of Indian Ocean trade."},
+1509:{title:"BATTLE OF DIU",summary:"Portuguese naval forces defeat a coalition connected to Mamluk Egypt, Gujarat and Calicut, strengthening Portuguese coercive power at sea.",effects:"Portuguese naval leverage ↑ • human cost ↑",actual:"The battle was part of a wider struggle over Indian Ocean commerce and Portuguese attempts to impose armed control.",simplified:"Alliance structures and fleet composition are compressed.",sources:"Histories of Portuguese India and Indian Ocean commerce."},
+1510:{title:"PORTUGUESE CAPTURE GOA",summary:"Afonso de Albuquerque captures Goa, creating a durable Portuguese base on India's west coast.",effects:"Territorial control ↑ • human cost ↑",actual:"Goa was taken in 1510 amid complex regional politics involving the Bijapur Sultanate and local interests.",simplified:"The prototype currently treats Goa as a strategic node rather than simulating its full local politics.",sources:"Encyclopaedia Britannica; histories of Portuguese Goa."},
+1511:{title:"PORTUGUESE CAPTURE MALACCA",summary:"Portugal seizes Malacca, a major Southeast Asian entrepôt. Regional merchants adapt and alternative routes continue.",effects:"Portuguese choke-point power ↑ • Malacca political control changes",actual:"Albuquerque captured Malacca in 1511. Portuguese conquest did not end Southeast Asian commerce.",simplified:"The many Malay, Javanese, Chinese, Gujarati and other merchant communities are summarized.",sources:"Encyclopaedia Britannica; histories of the Malacca Sultanate."},
+1517:{title:"PORTUGUESE CONTACT WITH MING CHINA",summary:"Portuguese merchants and envoys enter the Ming commercial sphere, where Chinese authorities regulate foreign access.",effects:"European–Chinese direct contact ↑",actual:"Early Portuguese relations with Ming authorities were unstable and did not amount to European control of Chinese trade.",simplified:"Ming maritime policy is represented as a state-level trade-access variable.",sources:"Metropolitan Museum; histories of Ming foreign trade."},
+1519:{title:"MAGELLAN EXPEDITION DEPARTS",summary:"A Spanish-sponsored expedition led by Ferdinand Magellan sails west seeking access to the Spice Islands.",effects:"Iberian route competition becomes global",actual:"Magellan died in the Philippines in 1521; Juan Sebastián Elcano completed the circumnavigation in 1522.",simplified:"This campaign ends in 1520, before the expedition's outcome.",sources:"Encyclopaedia Britannica; Library of Congress."},
+1520:{title:"THE WORLD IS MORE TIGHTLY CONNECTED",summary:"By 1520 European Atlantic expansion is intersecting with long-established Afro-Eurasian systems and accelerating colonization in the Americas.",effects:"Global integration ↑ • imperial competition ↑",actual:"No single event created a global economy. Connections intensified unevenly over decades and centuries.",simplified:"1520 is a teaching checkpoint, not a claim that globalization began in one year.",sources:"Global economic histories and Atlantic/Indian Ocean scholarship."}
+};
+const bonuses={Portugal:{navy:6,know:8,money:-5},Castile:{power:6,money:8},Venice:{trade:12,money:12},England:{money:4,navy:2},France:{power:5,money:5}};
+function $(x){return document.getElementById(x)};function clamp(x){return Math.max(0,Math.min(100,x))}
+function log(t){$("log").innerHTML=`<div><b>${y}</b> — ${t}</div>`+$("log").innerHTML}
+function stats(){$("year").textContent=y;["money","navy","know","power"].forEach(k=>$(k).textContent=S[k])}
+function world(){$("world").innerHTML=Object.entries(W).map(([k,v])=>`<div><b>${k}</b><br>Economy ${v.e} • Power ${v.p} • Stability ${v.s}</div>`).join("")}
+function markets(){let shock=(W["Gujarat / W. India"].s<65?5:0)+(y>=1453?2:0)-(y>=1498?3:0);let rows=[["Pepper",8,30+shock],["Cloves",10,34+((y*3)%5)],["Nutmeg",11,37+((y*5)%6)],["Silk",20,44+((y*7)%5)],["Porcelain",18,48+((y*11)%6)]];$("market").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}
+function event(){let e=events[y];if(e){$("event").innerHTML=`<div class="yr">HISTORICAL RECORD • ${y}</div><h2>${e.title}</h2><p>${e.summary}</p><div class="effects">${e.effects}</div><div class="record"><button id="recordBtn">📚 Historical Record</button><div id="recordBox" class="recordbox" hidden><span class="actual">WHAT ACTUALLY HAPPENED</span><br>${e.actual}<br><br><b>What this prototype simplifies:</b> ${e.simplified}<br><br><b>Reference trail:</b> ${e.sources}</div></div>`;setTimeout(()=>{let b=$("recordBtn");if(b)b.onclick=()=>{let x=$("recordBox");x.hidden=!x.hidden}},0)}else $("event").innerHTML=`<div class="yr">WORLD TURN • ${y}</div><h2>The world moves without you.</h2><p>States, ports and merchant communities across Africa, Asia, the Middle East and Europe pursue their own interests. Your European power gets one major decision this year.</p><div class="effects"><span class="actual">Historical world:</span> events outside your control continue according to the historical timeline.</div>`}
+function ai(){if(y%4===0){W["Ming China"].e=clamp(W["Ming China"].e+1);log("WORLD: Ming commercial output expands.")}if(y%5===0){W["Gujarat / W. India"].e=clamp(W["Gujarat / W. India"].e+2);log("WORLD: Western Indian and Indian Ocean commerce grows.")}if(y%6===0){W["Ottoman Empire"].p=clamp(W["Ottoman Empire"].p+2);log("WORLD: Ottoman influence expands.")}if(y%7===0){W["Malacca Sultanate"].e=clamp(W["Malacca Sultanate"].e+2);log("WORLD: Malacca attracts more regional trade.")}}
+function choose(label,d,speech){Object.entries(d).forEach(([k,v])=>S[k]=k==="money"?S[k]+v:clamp(S[k]+v));$("speech").textContent=speech;log(`<span class="counter">STUDENT COUNTERFACTUAL</span> — ${nation}: ${label}`);ai();if(y<1520){y++;render()}else finish()}
+function actions(){let A=[
+["🪙 Trade","Buy and sell through existing markets.",{money:8,trade:3},"Our merchants profit, but we remain dependent on established networks."],
+["⛵ Explore","Finance voyages and route knowledge.",{money:-14,know:5,navy:2},"Exploration costs us now, but knowledge may become strategic power."],
+["📜 Diplomacy","Negotiate access and alliances.",{money:-6,power:4,trade:2},"Diplomacy preserves access without requiring conquest."],
+["🏗 Build","Construct ships and port capacity.",{money:-16,navy:5},"Infrastructure converts money into long-term capacity."],
+["⚔ Military","Protect trade and project force.",{money:-14,navy:4,power:4,human:3},"Military power may protect commerce—but coercion creates human costs."],
+["📚 Research","Improve navigation, maps and knowledge.",{money:-10,know:6},"Better information reduces uncertainty; it does not eliminate risk."]
+];$("actions").innerHTML=A.map((a,i)=>`<button class="action" data-i="${i}"><b>${a[0]}</b><span>${a[1]}</span></button>`).join("");document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{let a=A[+b.dataset.i];choose(a[0].replace(/^.. /,""),a[2],a[3])})}
 function render(){
-update();
-if(s.step===0){
-set(`<div class="kicker">Mission briefing • 1450</div>
-<h2>You advise an ambitious European ruler.</h2>
-<p>Europe is recovering from centuries of political fragmentation and conflict. Population and trade are growing again. Wealthy buyers want luxuries from faraway markets.</p>
-<p><b>Your mission:</b> turn 100 ducats into wealth and power. You and your partner must agree on every major decision.</p>
-<div class="event"><p><b>Rule:</b> There may not be one “correct” choice. History is shaped by incentives, limits, accidents, geography, and human decisions.</p></div>
-<button id="start" class="primary">Begin the campaign</button>`);
-return}
-
-if(s.step===1){
-set(`<div class="kicker">Phase 1 • Political world</div>
-<h2>Europe did not go directly from Rome to modern countries.</h2>
-<p>Put these developments in the order you think makes the most sense. Discuss first; then choose the best sequence.</p>
-<div class="choice-grid">
-<button id="q1">A. Western Rome falls → fragmented kingdoms → larger kingdoms consolidate → stronger states compete</button>
-<button id="q2">B. Strong modern nations → Western Rome falls → Byzantine Empire begins → Charlemagne</button>
-<button id="q3">C. Charlemagne → Roman Republic → Islam → Western Rome falls</button>
-</div>`);
-btn("q1",()=>consequence({title:"Good historical frame.",body:"After the western Roman imperial system collapsed, political authority fragmented. Over centuries, new kingdoms and empires rose, fell, merged, and competed. The eastern Roman/Byzantine Empire continued for roughly another thousand years.",note:"Keep this idea: political borders are temporary; power reorganizes."},{p:5},"Built a correct political sequence."));
-btn("q2",()=>consequence({title:"Not quite.",body:"Modern national borders come much later. Western Rome’s collapse produced fragmentation rather than modern states appearing immediately.",note:"Your kingdom loses time sorting out the chronology."},{t:-3},"Misread the political sequence, then corrected it."));
-btn("q3",()=>consequence({title:"Chronology trouble.",body:"Charlemagne lived centuries after the Roman Republic. Islam emerged in the 600s CE, after the western Roman Empire had fallen.",note:"History is easier when you build a chronological spine first."},{t:-4},"Had to repair the chronology."));
-return}
-
-if(s.step===2){
-set(`<div class="kicker">Phase 1 • Stability</div>
-<h2>Your kingdom finally has several decades of relative peace.</h2>
-<p>Roads are safer. Harvests are more predictable. Population is growing. Merchants are returning.</p>
-<p>Which outcome is <b>most likely</b>?</p>
-<div class="choice-grid">
-<button id="a">People stop trading because peace removes the need for goods.</button>
-<button id="b">Trade grows because risk falls and people have more resources to spend.</button>
-<button id="c">Prices of every good automatically fall to zero.</button>
-<button id="d">Nothing changes; politics has no relationship to economics.</button>
-</div>`);
-btn("b",()=>consequence({title:"Stability creates opportunity.",body:"When merchants expect roads, laws, currencies, and governments to remain usable, trade becomes less risky. Growing wealth also creates more demand for nonessential goods.",note:"Stability does not guarantee prosperity, but predictability can lower risk."},{t:8,tr:8,p:3},"Used political stability to expand trade."));
-["a","c","d"].forEach(id=>btn(id,()=>consequence({title:"Your merchants disagree.",body:"Political stability does not magically create wealth, but predictable rules and safer movement can make trade and investment more attractive. Instability raises risk and can disrupt supply.",note:"Your advisers revise the plan."},{t:-5,tr:2},"Underestimated the economic value of stability.")));
-return}
-
-if(s.step===3){
-set(`<div class="kicker">Phase 2 • The luxury market</div>
-<h2>A merchant arrives with pepper, silk, perfumes, and precious stones.</h2>
-<p>Wealthy European customers are willing to pay extremely high prices for Asian luxuries.</p>
-<table><tr><th>Good</th><th>Approx. source cost</th><th>European sale price</th></tr>
-<tr><td>Pepper</td><td>8</td><td>30</td></tr><tr><td>Silk</td><td>15</td><td>48</td></tr><tr><td>Perfume ingredients</td><td>12</td><td>37</td></tr></table>
-<p>You have 108–116 ducats depending on earlier choices. What is the strongest economic question?</p>
-<div class="choice-grid"><button id="why">Why is the European price so much higher?</button><button id="ban">Should we ban luxury goods?</button><button id="free">Can we demand merchants sell them at the Asian price?</button><button id="ignore">Ignore the market.</button></div>`);
-btn("why",()=>consequence({title:"Investigate the supply chain.",body:"Excellent. A large price difference can signal costs, scarcity, risk, market power, or profit somewhere between producer and buyer.",note:"Next: follow the pepper."},{tr:5},"Asked where the price difference comes from."));
-["ban","free","ignore"].forEach(id=>btn(id,()=>consequence({title:"The demand does not disappear.",body:"Wealthy buyers still want the goods. The better business question is why the final price is so different from the price closer to production.",note:"Demand creates an incentive for someone to find a profitable supply."},{t:-4},"Tried to avoid the price problem before investigating it.")));
-return}
-
-if(s.step===4){
-set(`<div class="kicker">Phase 2 • Follow the pepper</div>
-<h2>How does an 8-ducat product become a 30-ducat product?</h2>
-<div class="route"><div>South & East Asian producers<br><b>8</b></div><div class="arrow">→</div><div>Regional merchants<br><b>+5</b></div><div class="arrow">→</div><div>Overland/sea transport<br><b>+6</b></div></div>
-<div class="route"><div>Taxes, tolls & risk<br><b>+4</b></div><div class="arrow">→</div><div>Mediterranean merchants<br><b>+4</b></div><div class="arrow">→</div><div>European market<br><b>27+</b></div></div>
-<p>Choose the best explanation.</p>
-<div class="choice-grid"><button id="cost">Every stage adds costs and often a profit margin. Distance and risk matter.</button><button id="magic">European merchants simply invent a random price.</button><button id="supply">Only demand matters; supply and transport do not.</button><button id="cheap">Long-distance trade should always make goods cheaper.</button></div>`);
-btn("cost",()=>consequence({title:"You found the economic engine.",body:"Long supply chains can accumulate transportation costs, losses, duties, tolls, financing costs, and merchant markups. High demand at the destination can make the trade profitable despite those costs.",note:"This is the problem European merchants and rulers want to solve."},{t:12,tr:8},"Explained how trade costs accumulate."));
-["magic","supply","cheap"].forEach(id=>btn(id,()=>consequence({title:"Recalculate.",body:"The price reflects more than greed or one single cause. Goods cross long distances through multiple commercial and political systems, with costs and risks added along the way.",note:"Your treasury absorbs the mistake."},{t:-7},"Misread the long-distance supply chain.")));
-return}
-
-if(s.step===5){
-set(`<div class="kicker">Phase 3 • Trade and power</div>
-<h2>1453: Constantinople changes hands.</h2>
-<p>The Ottoman Empire captures Constantinople, ending the Byzantine Empire. The city remains a major commercial center, but the political balance around eastern Mediterranean trade has changed.</p>
-<p>Your merchants fear war, changing tolls, diplomatic problems, and dependence on powers they do not control.</p>
-<div class="choice-grid"><button id="deal">Negotiate and keep using existing trade networks.</button><button id="route">Invest in finding a sea route that gives you more direct access.</button><button id="war">Declare a giant war immediately.</button><button id="both">Keep trading while secretly funding route research.</button></div>`);
-btn("deal",()=>consequence({title:"Diplomacy keeps goods moving.",body:"Commerce often continues even between political and religious rivals because both sides benefit. But your kingdom remains dependent on existing routes and intermediaries.",note:"Trade and conflict can exist at the same time."},{t:8,tr:6,p:2},"Chose diplomacy and continued trade."));
-btn("route",()=>consequence({title:"High risk, high reward.",body:"A direct maritime route could reduce dependence on some intermediaries and create enormous strategic advantage. It will require ships, navigation knowledge, capital, and luck.",note:"Exploration is an investment, not a spontaneous adventure."},{t:-20,tr:10,p:7},"Funded research for a direct sea route."));
-btn("both",()=>consequence({title:"Hedge your bets.",body:"You preserve current income while investing in a possible alternative. It costs more now, but reduces the danger of betting everything on one route.",note:"States often pursue several strategies at once."},{t:-12,tr:12,p:5},"Maintained trade while funding exploration."));
-btn("war",()=>consequence({title:"War is expensive.",body:"Your kingdom lacks the resources to conquer the entire eastern Mediterranean commercial system. Military spending drains your treasury and disrupts your own trade.",note:"Power has costs."},{t:-25,tr:-5,p:2,h:6},"Tried to solve a trade problem with immediate war."));
-return}
-
-if(s.step===6){
-set(`<div class="kicker">Phase 3 • Portugal moves</div>
-<h2>Intelligence report: Portuguese expeditions are pushing farther down Africa.</h2>
-<p>If Portugal reaches Indian Ocean markets by sea, it could gain a major commercial advantage.</p>
-<p>Your ruler asks: <b>What do competitors do when another country may control a profitable route?</b></p>
-<div class="choice-grid"><button id="copy">Copy the same strategy and race Portugal around Africa.</button><button id="west">Fund a risky proposal to sail west toward Asia.</button><button id="wait">Wait and buy from Portugal later.</button><button id="spy">Gather information before choosing.</button></div>`);
-btn("copy",()=>consequence({title:"Competition intensifies.",body:"Copying a rival can work, but Portugal has a head start and knowledge built from decades of Atlantic and African voyages.",note:"A competitor's advantage can push others toward different strategies."},{t:-18,tr:8,p:5},"Tried to race Portugal on the African route."));
-btn("west",()=>consequence({title:"A dangerous alternative.",body:"Sailing west is a gamble. Europeans know Earth is spherical, but estimates of the distance to Asia vary badly. A western expedition could run out of food long before reaching Asia.",note:"Your ruler must decide whether the possible reward justifies the risk."},{t:-22,tr:8,p:8},"Funded a western route gamble."));
-btn("wait",()=>consequence({title:"Safe now, weaker later.",body:"You conserve cash, but if Portugal controls a route, it can shape prices and access. Dependence on a rival creates strategic vulnerability.",note:"Doing nothing is still a decision."},{t:3,tr:-5,p:-3},"Waited for Portugal to control the route."));
-btn("spy",()=>consequence({title:"Information has value.",body:"You learn Portugal is investing heavily in navigation and Atlantic experience. You still need to choose a strategy soon.",note:"Knowledge reduces uncertainty but cannot eliminate risk."},{t:-5,p:4},"Paid for intelligence on Portuguese exploration."));
-return}
-
-if(s.step===7){
-set(`<div class="kicker">Phase 4 • 1492</div>
-<h2>A westward expedition reaches inhabited lands across the Atlantic.</h2>
-<p>The expedition has <b>not</b> reached Asia. Millions of Indigenous people already live throughout the Americas in complex societies.</p>
-<p>Your ruler asks what to do next.</p>
-<div class="choice-grid"><button id="tradepeace">Trade and establish diplomatic relationships.</button><button id="claim">Claim territory for the crown and seek resources.</button><button id="mission">Prioritize missionary activity and alliance-building.</button><button id="extract">Use force to seize wealth and labor.</button></div>`);
-btn("tradepeace",()=>consequence({title:"Commerce without immediate conquest.",body:"Trade can create exchange and alliances, but relationships remain unequal if backed by military power or claims Europeans make without Indigenous consent.",note:"Peaceful intentions do not erase conflicting claims to land and sovereignty."},{t:14,tr:10,p:4,h:3},"Pursued trade and diplomacy in the Americas."));
-btn("claim",()=>consequence({title:"Trade begins turning into empire.",body:"Territorial claims can give a state access to land, ports, and resources, but they collide with the sovereignty and lives of people already there.",note:"Economic competition increasingly becomes political control."},{t:18,tr:12,p:15,h:18},"Claimed territory and resources."));
-btn("mission",()=>consequence({title:"Religion and power overlap.",body:"Missionaries may be motivated by sincere faith, while rulers may also see religion as tied to legitimacy, alliances, and imperial expansion. These motives can reinforce each other.",note:"Avoid reducing religion to either pure faith or pure excuse."},{t:7,p:10,h:8},"Used religion and alliances as part of expansion."));
-btn("extract",()=>consequence({title:"Rapid wealth, severe human consequences.",body:"Violence and coerced labor can enrich conquerors and states while devastating Indigenous communities. Systems may reward actions that impose enormous costs on other people.",note:"Watch what happens to your score."},{t:35,tr:15,p:20,h:35},"Used coercion to seize wealth and labor."));
-return}
-
-if(s.step===8){
-set(`<div class="kicker">Phase 4 • 1498</div>
-<h2>Vasco da Gama reaches India by sea.</h2>
-<p>Portugal now has a maritime route from Europe around Africa into the Indian Ocean trading world.</p>
-<p>What does this change most directly?</p>
-<div class="choice-grid"><button id="direct">European states now have another way to reach Asian markets and compete over trade.</button><button id="allold">All older trade networks instantly disappear.</button><button id="peace">Competition for trade ends permanently.</button><button id="none">Nothing important changes.</button></div>`);
-btn("direct",()=>consequence({title:"A new route changes the competition.",body:"Older routes continue, but oceanic connections give European states new opportunities to enter, disrupt, and eventually dominate parts of existing trading systems.",note:"New routes add competition; they do not erase history overnight."},{tr:15,p:8},"Recognized the significance of the sea route to India."));
-["allold","peace","none"].forEach(id=>btn(id,()=>consequence({title:"Too absolute.",body:"Existing Asian, African, Middle Eastern, and Mediterranean trade systems continued. The new European sea route altered competition rather than instantly replacing the old world economy.",note:"Historical change is usually layered, not an on/off switch."},{tr:2},"Overstated what the new sea route changed immediately.")));
-return}
-
-if(s.step===9){
-set(`<div class="kicker">Phase 5 • Build the chain</div>
-<h2>Partner challenge: explain how pepper can lead to empire.</h2>
-<p>Before clicking, say the chain out loud to your partner. Then choose the strongest causal sequence.</p>
-<div class="choice-grid">
-<button id="chain">Demand for Asian luxuries → profitable but costly trade → search for alternate routes → competition among states → naval expansion → control of ports/resources/territory → colonial empires</button>
-<button id="random">Pepper → Columbus randomly sails → everyone decides to colonize</button>
-<button id="religion">Religion alone → exploration → trade appears afterward</button>
-<button id="tech">Technology alone → ships → empire, with economics and politics mostly irrelevant</button>
-</div>`);
-btn("chain",()=>consequence({title:"You found the spine of the unit.",body:"No single factor explains European expansion. Demand, commerce, state competition, religion, navigation, military power, geography, and contingency interact.",note:"Now explain it in your own words."},{p:10,tr:10},"Built the causal chain from trade to empire."));
-["random","religion","tech"].forEach(id=>btn(id,()=>consequence({title:"Too simple.",body:"Single-cause explanations are tempting, but they hide the interaction among economics, politics, religion, technology, and geography.",note:"Historical reasoning means connecting several causes."},{p:-2},"Rejected a single-cause explanation after reconsidering.")));
-return}
-
-if(s.step===10){
-set(`<div class="kicker">Individual thinking • 3 minutes</div>
-<h2>Write before you talk.</h2>
-<p>Each partner should silently draft an answer on paper or in your class notes:</p>
-<div class="event"><p><b>Prompt:</b> Why would European rulers risk money and lives trying to find new routes to Asian markets? Use at least three ideas from the simulation.</p></div>
-<p class="small">Do not ask your teacher whether your answer is “right.” Use evidence from your decisions.</p>
-<button id="donewrite" class="primary">Both partners have written →</button>`);
-btn("donewrite",()=>next());
-return}
-
-if(s.step===11){
-set(`<div class="kicker">Partner debrief • 5 minutes</div>
-<h2>Did you actually “win”?</h2>
-<p>Your campaign finished with:</p>
-<p><span class="tag">Treasury ${s.treasury}</span><span class="tag">Trade ${s.trade}/100</span><span class="tag">Power ${s.power}/100</span><span class="tag">Human Cost ${s.human}/100</span></p>
-<p>Discuss:</p>
-<ol><li>Which decision made you richer?</li><li>Which decision increased your political power?</li><li>Who paid the cost for your success?</li><li>Can a country become richer while making the world worse for other people?</li></ol>
-<label for="reflect"><b>As partners, write one sentence that explains the biggest lesson of the game:</b></label>
-<textarea id="reflect" maxlength="500"></textarea>
-<button id="finish" class="primary">Finish campaign</button>`);
-btn("finish",()=>{s.reflection=(el("reflect").value||"").trim();s.step++;render()});
-return}
-
-if(s.step===12){
-let band=s.human>=30?"Your kingdom gained power at a severe human cost.":s.human>=15?"Your kingdom gained power with substantial human consequences.":"Your kingdom limited some direct human costs, though European expansion still affected societies whose land and sovereignty Europeans challenged.";
-set(`<div class="kicker">Campaign complete</div><h2>The game you played was a model of history.</h2>
-<p>You began with political stabilization and consumer demand. You encountered long-distance trade costs, strategic dependence, Ottoman power, Portuguese exploration, Spanish competition, Atlantic expansion, and the beginnings of colonial empire.</p>
-<div class="card debrief"><h2>Final result</h2>
-<p><b>Treasury:</b> ${s.treasury} &nbsp; <b>Trade:</b> ${s.trade}/100 &nbsp; <b>Power:</b> ${s.power}/100 &nbsp; <b>Human Cost:</b> ${s.human}/100</p>
-<p>${band}</p></div>
-<p><b>Your sentence:</b> ${s.reflection?s.reflection.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m])):"(No response entered.)"}</p>
-<h2>Exit ticket</h2>
-<p>On your own paper or in the form your teacher provides, answer:</p>
-<ol><li>Why were Asian luxury goods expensive in Europe?</li><li>How can political stability or instability affect trade?</li><li>How did competition between European states encourage exploration?</li><li>Explain the chain from European demand for Asian goods to colonial expansion.</li></ol>
-<button id="restart" class="secondary">Restart simulation</button>`);
-btn("restart",()=>{s.step=0;s.treasury=100;s.trade=10;s.power=10;s.human=0;s.choices=[];s.reflection="";el("log").classList.add("hidden");render()});
-return}
+ if(y>=1479 && nation==="Castile") $("speech").textContent=$("speech").textContent.replace("Castile","the Castilian-Aragonese monarchy");
+ stats();world();markets();event();actions();if(document.getElementById("routes"))drawRoutes()
 }
-render();
+function finish(){$("event").innerHTML=`<div class="yr">CAMPAIGN COMPLETE</div><h2>FROM PEPPER TO EMPIRE</h2><p>Your nation began seeking access to Asian goods. By 1520, trade had become entangled with diplomacy, navigation, naval violence, territorial claims and colonization.</p><p><b>Partner challenge:</b> Explain how this global system begins setting the stage for the future history of North America.</p>`;$("actions").innerHTML=""}
+document.querySelectorAll(".nation").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nation").forEach(x=>x.classList.remove("active"));b.classList.add("active");nation=b.dataset.n;S={money:120,navy:8,know:10,power:12,human:0,trade:12};Object.entries(bonuses[nation]).forEach(([k,v])=>S[k]+=v);$("speech").textContent=`You now advise ${nation}. Its strengths and weaknesses will shape your strategy.`;render()});
+
+const ports={
+Lisbon:{region:"Portugal",goods:"Wine, salt, European manufactures",role:"Atlantic launch point",note:"Portugal's position encourages Atlantic experimentation and access to African routes."},
+Venice:{region:"Venetian Republic",goods:"Asian luxuries redistributed into Europe",role:"Mediterranean commercial power",note:"Venice profits from established eastern Mediterranean networks and has less incentive to abandon them early."},
+Constantinople:{region:"Byzantine Empire → Ottoman Empire (1453)",goods:"Silk, spices, grain, luxury goods",role:"Strategic crossroads",note:"Control changes in 1453. Trade continues, but bargaining power and political risk change."},
+Cairo:{region:"Mamluk Sultanate → Ottoman rule (1517)",goods:"Pepper, spices, textiles",role:"Red Sea–Mediterranean connector",note:"A crucial bridge between Indian Ocean commerce and Mediterranean consumers."},
+Zanzibar:{region:"Swahili Coast",goods:"Gold, ivory, regional goods",role:"Indian Ocean port network",note:"East African city-states participate in long-established Indian Ocean exchange."},
+Calicut:{region:"Calicut (Kozhikode), Malabar Coast",goods:"Pepper, textiles",role:"Major Indian Ocean market",note:"Portuguese arrivals enter an existing sophisticated commercial system; access is not domination."},
+Malacca:{region:"Malacca Sultanate → Portuguese after 1511",goods:"Cloves, nutmeg, textiles, porcelain",role:"Southeast Asian entrepôt",note:"Its position near the strait makes it a strategic commercial choke point."},
+Canton:{region:"Ming dynasty China",goods:"Silk, porcelain, manufactured goods",role:"Regulated Chinese maritime market",note:"Ming authorities regulate foreign access from a position of considerable economic strength."}
+};
+const coords={Lisbon:[36.4,34.5],Venice:[44.2,35.7],Constantinople:[51.7,37.2],Cairo:[51.2,48.2],Zanzibar:[55,69],Calicut:[68,57],Malacca:[83,61.5],Canton:[88,44.5]};
+const connections=[["Canton","Malacca"],["Malacca","Calicut"],["Calicut","Cairo"],["Calicut","Zanzibar"],["Cairo","Constantinople"],["Constantinople","Venice"],["Venice","Lisbon"]];
+function drawRoutes(){
+ const box=$("routes"); box.innerHTML="";
+ connections.forEach(([a,b])=>{const A=coords[a],B=coords[b],dx=B[0]-A[0],dy=B[1]-A[1],len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)*180/Math.PI;
+ const d=document.createElement("div");d.className="routeLine";d.style.left=A[0]+"%";d.style.top=A[1]+"%";d.style.width=len+"%";d.style.transform=`rotate(${ang}deg)`;box.appendChild(d)});
+ if(y>=1488){const a=coords.Lisbon,b=coords.Zanzibar,dx=b[0]-a[0],dy=b[1]-a[1],d=document.createElement("div");d.className="routeLine eu";d.style.left=a[0]+"%";d.style.top=a[1]+"%";d.style.width=Math.hypot(dx,dy)+"%";d.style.transform=`rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)`;box.appendChild(d)}
+}
+function openPort(name){
+ const p=ports[name], pop=$("popup"); let price=name==="Calicut"?"Pepper 8–12 d":name==="Malacca"?"Cloves 10–14 d • Nutmeg 11–16 d":name==="Canton"?"Silk 20–25 d • Porcelain 18–24 d":name==="Venice"?"Pepper 28–35 d":name==="Lisbon"?"Pepper 30–38 d":"Regional prices vary";
+ pop.innerHTML=`<button id="closePop" style="float:right">×</button><h3>${name}</h3><div class="routeinfo"><b>Political region:</b> ${p.region}<br><b>Major goods:</b> ${p.goods}<br><b>Strategic role:</b> ${p.role}<br><b>Sample market:</b> ${price}</div><p>${p.note}</p>`;
+ pop.hidden=false;$("closePop").onclick=()=>pop.hidden=true;
+}
+document.querySelectorAll(".hotspot").forEach(b=>b.onclick=()=>openPort(b.dataset.port));
+$("tradeLayer").onclick=()=>{const on=$("tradeLayer").classList.toggle("on");document.querySelectorAll(".routeLine").forEach(x=>x.style.display=on?"":"none")};
+$("politicalLayer").onclick=()=>{const on=$("politicalLayer").classList.toggle("on");document.querySelectorAll(".hotspot").forEach(x=>x.style.display=on?"":"none")};
+$("resourceLayer").onclick=()=>{const on=$("resourceLayer").classList.toggle("on");$("market").closest("table").style.opacity=on?"1":".28"};
+$("physicalLayer").onclick=()=>{$("physicalLayer").classList.toggle("on");document.querySelector(".map img").style.filter=$("physicalLayer").classList.contains("on")?"none":"grayscale(.85) brightness(.72)"};
+
+render();drawRoutes();
 })();
-</script>
-</body>
-</html>
+</script></body></html>

@@ -1,0 +1,18 @@
+THE SPICE RACE — HARD DESIGN RULE: HISTORICAL INTEGRITY
+
+Gameplay must never override historical accuracy.
+
+The simulation may simplify history to make complex systems understandable to students, but it must not invent, distort, or knowingly perpetuate misleading historical narratives merely to improve gameplay.
+
+1. Established historical events and chronology remain anchored to the historical record.
+2. Students control their assigned European power, not world history.
+3. Non-European societies remain independent historical actors with their own political, economic, cultural, and strategic interests.
+4. Counterfactual student choices must be historically plausible and clearly labeled as counterfactual.
+5. The interface must distinguish WHAT ACTUALLY HAPPENED from WHAT THE STUDENT CHOSE.
+6. Anachronistic modern nation-state labels should be avoided when they distort historical political reality.
+7. Religion is treated as a genuine historical force interacting with economic, political, dynastic, and cultural motives.
+8. Existing Afro-Eurasian and Indigenous systems must not be depicted as empty spaces awaiting Europeans.
+9. Educational simplifications must be disclosed through Historical Record / What We Simplified notes.
+10. Major historical claims should have a reference trail suitable for later source verification.
+
+Historical complexity is a feature, not a problem to be designed away.
