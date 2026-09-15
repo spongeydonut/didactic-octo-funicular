@@ -1,4 +1,6 @@
-MAP FOCUS RULE: The player does not freely pan the map. The game camera moves to the geography relevant to the current student decision or documented historical event.
-MAP ART RULE: Use original strategy-game art, not modern Leaflet/Google-style maps.
-HISTORICAL INTEGRITY: illustrated political geography is a teaching reconstruction and must not override verified history.
-CAUSE/EFFECT: every choice must visibly change the map focus, stats, and causal explanation.
+PROTOTYPE 1.1 LOCKED RULES
+INQUIRY LOOP: Mission → investigate → collect evidence → discuss → answer → unlock decision → consequence → explain.
+MAP ALIGNMENT: background, cities, routes, ships, commodities, and event markers live inside ONE transformed worldstage. Camera transforms the worldstage only.
+FOCUSED CAMERA: lesson uses stable predefined views rather than free pan/zoom.
+HISTORICAL INTEGRITY: documented history is distinct from student counterfactuals.
+LEARNING: every action must serve a clear cause/effect learning objective.
