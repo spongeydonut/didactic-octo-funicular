@@ -29,12 +29,22 @@ h2,h3{margin:.3rem 0 .6rem;color:#f0d28b}.nation{width:100%;text-align:left;padd
 .recordbox{margin-top:7px;background:#fff8e8;border:1px solid #b9a77c;padding:8px;border-radius:6px;font: .78rem system-ui,sans-serif}
 .actual{color:#416a4c;font-weight:800}.counter{color:#7a4a2c;font-weight:800}
 
+
+.objective{background:#2a2115;border-left:4px solid #d4aa52;padding:8px;margin:8px 0;font:.76rem system-ui,sans-serif}.objective b{color:#f0d28b}
+.causal{background:#142630;border:1px solid #4c6d7b;border-radius:8px;padding:9px;margin:8px 0;font-family:system-ui,sans-serif}.chain{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.node{background:#eadbb8;color:#211d17;padding:5px 7px;border-radius:6px;font-size:.72rem;font-weight:700}.arrow{color:#e2b95d;font-weight:900}
+.changePanel{background:#172c37;border:2px solid #5f92aa;border-radius:8px;padding:9px;margin:7px 0;font:.78rem system-ui,sans-serif}.changePanel.orange{border-color:#d7804d}.changePanel.gold{border-color:#d6ad4f}.why{margin-top:6px;padding-top:6px;border-top:1px solid #49616d}.delta{display:grid;grid-template-columns:1fr auto;gap:3px 10px}.delta b{color:#f0d28b}
+.shipAnim,.commodityAnim{position:absolute;z-index:9;font-size:25px;transition:left 1.2s ease,top 1.2s ease;pointer-events:none}.pulse{animation:pulse 1s ease 2}@keyframes pulse{50%{box-shadow:0 0 0 12px #e0b85c55}}
+.controls{display:flex;gap:6px;margin:7px 0}.controls button{width:auto;font-size:.7rem;padding:5px 8px}.learnTag{display:inline-block;margin-top:5px;padding:2px 5px;border-radius:10px;background:#6d4d24;color:#fff0c8;font-size:.64rem}
+
 @media(max-width:1000px){.grid{grid-template-columns:1fr}.actions{grid-template-columns:repeat(3,1fr)}header{grid-template-columns:1fr repeat(2,100px)}.metric:nth-of-type(n+3){display:none}}
 </style></head><body>
 <header><div class="brand">✦ THE SPICE RACE <small style="display:block;font-size:.6rem;font-weight:400">TRADE • POWER • PEOPLE • A CONNECTED WORLD</small></div>
 <div class="metric">YEAR<b id="year">1450</b></div><div class="metric">💰 DUCATS<b id="money">120</b></div><div class="metric">⛵ NAVY<b id="navy">8</b></div><div class="metric">🧭 KNOWLEDGE<b id="know">10</b></div><div class="metric">👑 INFLUENCE<b id="power">12</b></div></header>
 <main>
 <div class="integrity">HISTORICAL INTEGRITY MODE: established events follow the historical record. Your decisions change your nation's strategy and create labeled counterfactual outcomes; they do not rewrite unrelated world events.</div>
+<div class="objective"><b>CAMPAIGN I — ESSENTIAL QUESTION</b> How did European demand for Asian goods help produce maritime exploration and eventually colonial expansion?</div>
+<div class="causal"><b>CAUSE & EFFECT TRACKER</b><div class="chain" id="causeChain"><span class="node">European recovery</span><span class="arrow">→</span><span class="node">Luxury demand</span><span class="arrow">→</span><span class="node">Costly Asian trade</span></div></div>
+
 <div class="grid">
 <aside class="panel"><h3>Choose Your Nation</h3><button class="nation active" data-n="Portugal">🇵🇹 Portugal<small>Explorers by necessity.</small></button><button class="nation" data-n="Castile">🏰 Crown of Castile<small>Large Iberian kingdom; dynastic union with Aragon lies ahead.</small></button><button class="nation" data-n="Venice">🦁 Venice<small>Merchants of the Mediterranean.</small></button><button class="nation" data-n="England">🏴 Kingdom of England<small>Atlantic position; internal conflict will constrain the crown.</small></button><button class="nation" data-n="France">⚜ Kingdom of France<small>Recovering from the Hundred Years’ War.</small></button>
 <h3>World Powers</h3><div id="world" class="world"></div></aside>
@@ -55,7 +65,7 @@ h2,h3{margin:.3rem 0 .6rem;color:#f0d28b}.nation{width:100%;text-align:left;padd
 </div>
 <div class="layers"><button class="on" id="physicalLayer">🏔 Physical</button><button class="on" id="politicalLayer">⚑ Political</button><button class="on" id="tradeLayer">••• Trade</button><button class="on" id="resourceLayer">🪙 Resources</button></div>
 <div class="adviser"><div class="portrait">👑</div><div class="speech" id="speech">Your Majesty, Europe wants the luxuries of Asia. Our merchants can buy through established networks—or we can gamble on finding greater access. Discuss with your partner before acting.</div></div>
-<div class="actions" id="actions"></div>
+<div class="controls"><button id="animToggle">Animations: ON</button><button id="explainToggle">Explanations: ON</button></div><div id="changePanel"></div><div class="actions" id="actions"></div>
 </section>
 <aside class="panel"><div class="event" id="event"></div><h3>Commodity Markets</h3><table class="market"><thead><tr><th>Good</th><th>Asia</th><th>Europe</th></tr></thead><tbody id="market"></tbody></table><h3>Chronicle</h3><div class="log" id="log"></div></aside>
 </div></main>
@@ -83,9 +93,16 @@ function log(t){$("log").innerHTML=`<div><b>${y}</b> — ${t}</div>`+$("log").in
 function stats(){$("year").textContent=y;["money","navy","know","power"].forEach(k=>$(k).textContent=S[k])}
 function world(){$("world").innerHTML=Object.entries(W).map(([k,v])=>`<div><b>${k}</b><br>Economy ${v.e} • Power ${v.p} • Stability ${v.s}</div>`).join("")}
 function markets(){let shock=(W["Gujarat / W. India"].s<65?5:0)+(y>=1453?2:0)-(y>=1498?3:0);let rows=[["Pepper",8,30+shock],["Cloves",10,34+((y*3)%5)],["Nutmeg",11,37+((y*5)%6)],["Silk",20,44+((y*7)%5)],["Porcelain",18,48+((y*11)%6)]];$("market").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}
-function event(){let e=events[y];if(e){$("event").innerHTML=`<div class="yr">HISTORICAL RECORD • ${y}</div><h2>${e.title}</h2><p>${e.summary}</p><div class="effects">${e.effects}</div><div class="record"><button id="recordBtn">📚 Historical Record</button><div id="recordBox" class="recordbox" hidden><span class="actual">WHAT ACTUALLY HAPPENED</span><br>${e.actual}<br><br><b>What this prototype simplifies:</b> ${e.simplified}<br><br><b>Reference trail:</b> ${e.sources}</div></div>`;setTimeout(()=>{let b=$("recordBtn");if(b)b.onclick=()=>{let x=$("recordBox");x.hidden=!x.hidden}},0)}else $("event").innerHTML=`<div class="yr">WORLD TURN • ${y}</div><h2>The world moves without you.</h2><p>States, ports and merchant communities across Africa, Asia, the Middle East and Europe pursue their own interests. Your European power gets one major decision this year.</p><div class="effects"><span class="actual">Historical world:</span> events outside your control continue according to the historical timeline.</div>`}
+function event(){let e=events[y];if(e){$("event").innerHTML=`<div class="yr">HISTORICAL RECORD • ${y}</div><h2>${e.title}</h2><p>${e.summary}</p><div class="effects">${e.effects}</div><div class="record"><button id="recordBtn">📚 Historical Record</button><div id="recordBox" class="recordbox" hidden><span class="actual">WHAT ACTUALLY HAPPENED</span><br>${e.actual}<br><br><b>What this prototype simplifies:</b> ${e.simplified}<br><br><b>Reference trail:</b> ${e.sources}</div></div>`;setTimeout(()=>{let b=$("recordBtn");if(b)b.onclick=()=>{let x=$("recordBox");x.hidden=!x.hidden};historicalChain();if(explanations)$("changePanel").innerHTML+=`<div class="changePanel gold"><b>GOLD = HISTORICAL RECORD</b><div class="why">${e.summary}</div></div>`},0)}else $("event").innerHTML=`<div class="yr">WORLD TURN • ${y}</div><h2>The world moves without you.</h2><p>States, ports and merchant communities across Africa, Asia, the Middle East and Europe pursue their own interests. Your European power gets one major decision this year.</p><div class="effects"><span class="actual">Historical world:</span> events outside your control continue according to the historical timeline.</div>`}
 function ai(){if(y%4===0){W["Ming China"].e=clamp(W["Ming China"].e+1);log("WORLD: Ming commercial output expands.")}if(y%5===0){W["Gujarat / W. India"].e=clamp(W["Gujarat / W. India"].e+2);log("WORLD: Western Indian and Indian Ocean commerce grows.")}if(y%6===0){W["Ottoman Empire"].p=clamp(W["Ottoman Empire"].p+2);log("WORLD: Ottoman influence expands.")}if(y%7===0){W["Malacca Sultanate"].e=clamp(W["Malacca Sultanate"].e+2);log("WORLD: Malacca attracts more regional trade.")}}
-function choose(label,d,speech){Object.entries(d).forEach(([k,v])=>S[k]=k==="money"?S[k]+v:clamp(S[k]+v));$("speech").textContent=speech;log(`<span class="counter">STUDENT COUNTERFACTUAL</span> — ${nation}: ${label}`);ai();if(y<1520){y++;render()}else finish()}
+async function choose(label,d,speech){
+ if(busy)return;busy=true;
+ const before={...S}, k=label.toLowerCase().replace(/[^a-z]/g,""), L=lesson[k]||{why:speech,chain:["Decision","Consequence"]};
+ Object.entries(d).forEach(([key,v])=>S[key]=key==="money"?S[key]+v:clamp(S[key]+v));stats();setCause(L.chain);
+ await animateKind(k);panel(label,before,S,L.why,"orange");$("speech").textContent=speech;
+ log(`<span class="counter">STUDENT COUNTERFACTUAL</span> — ${nation}: ${label}`);
+ ai();if(y<1520){y++;render();historicalChain()}else finish();busy=false;
+}
 function actions(){let A=[
 ["🪙 Trade","Buy and sell through existing markets.",{money:8,trade:3},"Our merchants profit, but we remain dependent on established networks."],
 ["⛵ Explore","Finance voyages and route knowledge.",{money:-14,know:5,navy:2},"Exploration costs us now, but knowledge may become strategic power."],
@@ -93,13 +110,49 @@ function actions(){let A=[
 ["🏗 Build","Construct ships and port capacity.",{money:-16,navy:5},"Infrastructure converts money into long-term capacity."],
 ["⚔ Military","Protect trade and project force.",{money:-14,navy:4,power:4,human:3},"Military power may protect commerce—but coercion creates human costs."],
 ["📚 Research","Improve navigation, maps and knowledge.",{money:-10,know:6},"Better information reduces uncertainty; it does not eliminate risk."]
-];$("actions").innerHTML=A.map((a,i)=>`<button class="action" data-i="${i}"><b>${a[0]}</b><span>${a[1]}</span></button>`).join("");document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{let a=A[+b.dataset.i];choose(a[0].replace(/^.. /,""),a[2],a[3])})}
+];$("actions").innerHTML=A.map((a,i)=>`<button class="action" data-i="${i}"><b>${a[0]}</b><span>${a[1]}</span><span class="learnTag">${["Economics","Geography","Politics","Infrastructure","Power","Knowledge"][i]}</span></button>`).join("");document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{let a=A[+b.dataset.i];choose(a[0].replace(/^.. /,""),a[2],a[3])})}
 function render(){
  if(y>=1479 && nation==="Castile") $("speech").textContent=$("speech").textContent.replace("Castile","the Castilian-Aragonese monarchy");
  stats();world();markets();event();actions();if(document.getElementById("routes"))drawRoutes()
 }
-function finish(){$("event").innerHTML=`<div class="yr">CAMPAIGN COMPLETE</div><h2>FROM PEPPER TO EMPIRE</h2><p>Your nation began seeking access to Asian goods. By 1520, trade had become entangled with diplomacy, navigation, naval violence, territorial claims and colonization.</p><p><b>Partner challenge:</b> Explain how this global system begins setting the stage for the future history of North America.</p>`;$("actions").innerHTML=""}
+function finish(){$("event").innerHTML=`<div class="yr">CAMPAIGN COMPLETE</div><h2>FROM PEPPER TO EMPIRE</h2><p>Your nation began seeking access to Asian goods. By 1520, trade had become entangled with diplomacy, navigation, naval violence, territorial claims and colonization.</p><p><b>Partner challenge:</b> Explain how this global system begins setting the stage for the future history of North America.</p><div class="recordbox"><b>NEXT CAMPAIGN — THE ATLANTIC WORLD</b><br>The same systems continue: trade, land, resources, labor, sovereignty, religion, political competition and human cost. History does not reset between lessons.</div>`;$("actions").innerHTML=""}
 document.querySelectorAll(".nation").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nation").forEach(x=>x.classList.remove("active"));b.classList.add("active");nation=b.dataset.n;S={money:120,navy:8,know:10,power:12,human:0,trade:12};Object.entries(bonuses[nation]).forEach(([k,v])=>S[k]+=v);$("speech").textContent=`You now advise ${nation}. Its strengths and weaknesses will shape your strategy.`;render()});
+
+
+let animations=true, explanations=true, busy=false;
+const lesson={
+trade:{why:"Established trade moves desired goods, but transport, intermediaries, tolls and risk add costs. High demand keeps the trade profitable.",chain:["Asian luxury demand","Established routes","Costs accumulate","European price rises","Profit incentive"]},
+explore:{why:"Exploration consumes wealth now for geographic knowledge and possible future access. It is investment under uncertainty.",chain:["Costly trade","Search for alternatives","Fund voyages","Route knowledge","New access"]},
+diplomacy:{why:"Political relationships shape commerce. Negotiation can preserve access without conquest.",chain:["Political power","Diplomacy","Trade access","Lower friction"]},
+build:{why:"Ships and ports turn present wealth into future commercial and military capacity.",chain:["Investment","Infrastructure","Capacity","Long-range trade"]},
+military:{why:"States can use force to protect or seize trade, but coercion creates human costs and can disrupt societies.",chain:["Commercial rivalry","Military force","Route control","Imperial power","Human cost"]},
+research:{why:"Maps, pilots and navigation reduce uncertainty and make longer voyages more feasible.",chain:["Investment","Knowledge","Lower uncertainty","Exploration"]}
+};
+function setCause(a){$("causeChain").innerHTML=a.map((x,i)=>(i?'<span class="arrow">→</span>':'')+`<span class="node">${x}</span>`).join("")}
+function panel(title,before,after,why,type="orange"){
+ if(!explanations)return;
+ const names={money:"Treasury",trade:"Trade access",navy:"Naval power",know:"Knowledge",power:"Influence",human:"Human cost"};
+ const rows=Object.keys(names).filter(k=>before[k]!==after[k]).map(k=>`<span>${names[k]}</span><b>${before[k]} → ${after[k]}</b>`).join("");
+ $("changePanel").innerHTML=`<div class="changePanel ${type}"><b>${type==="orange"?"YOUR DECISION":type==="gold"?"HISTORICAL CHANGE":"WORLD RESPONSE"} — ${title}</b><div class="delta">${rows||"<span>World condition changed</span><b>→</b>"}</div><div class="why"><b>WHY:</b> ${why}</div></div>`;
+}
+function token(symbol,from,to){
+ if(!animations)return Promise.resolve();
+ return new Promise(r=>{let A=coords[from],B=coords[to],d=document.createElement("div");d.className=symbol==="⛵"?"shipAnim":"commodityAnim";d.textContent=symbol;d.style.left=A[0]+"%";d.style.top=A[1]+"%";$("map").appendChild(d);requestAnimationFrame(()=>requestAnimationFrame(()=>{d.style.left=B[0]+"%";d.style.top=B[1]+"%"}));setTimeout(()=>{d.remove();r()},1350)})
+}
+async function animateKind(k){
+ if(k==="trade"){await token("🌶","Calicut","Cairo");await token("🌶","Cairo","Venice")}
+ if(k==="explore")await token("⛵","Lisbon",y>=1488?"Zanzibar":"Venice");
+ if(k==="diplomacy")await token("📜","Lisbon","Venice");
+ if(k==="military")await token("⚔️","Lisbon",y>=1498?"Calicut":"Venice");
+ if(k==="build"||k==="research"){let h=document.querySelector('[data-port="Lisbon"]');h.classList.add("pulse");setTimeout(()=>h.classList.remove("pulse"),2100)}
+}
+function historicalChain(){
+ if(y===1453)setCause(["Ottoman conquest","Political control changes","Trade adapts","Strategic pressure"]);
+ else if(y===1488)setCause(["Navigation investment","Cape rounded","Route knowledge","Indian Ocean access"]);
+ else if(y===1492)setCause(["Iberian competition","Westward gamble","Caribbean encounter","Colonization"]);
+ else if(y===1498)setCause(["Cape route","Calicut reached","Existing markets","Competition for control"]);
+ else if(y>=1509)setCause(["Trade competition","Naval coercion","Port control","Territorial empire","Human cost"]);
+}
 
 const ports={
 Lisbon:{region:"Portugal",goods:"Wine, salt, European manufactures",role:"Atlantic launch point",note:"Portugal's position encourages Atlantic experimentation and access to African routes."},
@@ -130,6 +183,6 @@ $("politicalLayer").onclick=()=>{const on=$("politicalLayer").classList.toggle("
 $("resourceLayer").onclick=()=>{const on=$("resourceLayer").classList.toggle("on");$("market").closest("table").style.opacity=on?"1":".28"};
 $("physicalLayer").onclick=()=>{$("physicalLayer").classList.toggle("on");document.querySelector(".map img").style.filter=$("physicalLayer").classList.contains("on")?"none":"grayscale(.85) brightness(.72)"};
 
-render();drawRoutes();
+$("animToggle").onclick=()=>{animations=!animations;$("animToggle").textContent=`Animations: ${animations?"ON":"OFF"}`};$("explainToggle").onclick=()=>{explanations=!explanations;$("explainToggle").textContent=`Explanations: ${explanations?"ON":"OFF"}`;if(!explanations)$("changePanel").innerHTML=""};render();drawRoutes();
 })();
 </script></body></html>

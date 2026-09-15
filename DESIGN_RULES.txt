@@ -1,0 +1,7 @@
+THE SPICE RACE — CORE RULES
+1. Historical Integrity: gameplay never overrides established history; counterfactuals are labeled.
+2. Learning: every mechanic and animation serves an identifiable historical learning objective.
+3. Continuity: campaigns extend one persistent historical world into colonization, revolution, western expansion, and later U.S. history.
+4. Cause & Effect: decision → visible change → world response → historical meaning.
+5. Visual Alignment: routes, ships, commodities, events, and locations share the same map coordinate system.
+Visual language: GOLD = historical record; BLUE = world simulation; ORANGE = student counterfactual.
