@@ -1,6 +1,7 @@
-THE SPICE RACE — CORE DESIGN RULES
-1. Historical Integrity: gameplay never overrides established history; counterfactuals are labeled.
-2. Learning: every mechanic and animation serves a historical learning objective.
-3. Continuity: campaigns extend one persistent historical world.
-4. Cause & Effect: decision -> visible change -> world response -> historical meaning.
-5. Geographic Alignment: cities, routes, events, and animations use latitude/longitude on the same map system.
+THE SPICE RACE — LOCKED DESIGN RULES
+HISTORICAL INTEGRITY: gameplay never overrides established history.
+LEARNING: every mechanic and animation serves a historical learning objective.
+CONTINUITY: future campaigns extend the same historical world.
+CAUSE & EFFECT: every choice shows decision → change → world response → meaning.
+MAP TRUTH: real latitude/longitude remains the coordinate truth layer; historical political regions sit above it. Modern borders are not used as the historical lesson layer.
+VISUAL LANGUAGE: GOLD historical record; BLUE world simulation; ORANGE student counterfactual.
