@@ -1,1 +1,7 @@
-1.2: One SVG coordinate system for map, cities, routes, future ships and commodities. Evidence Book is persistent. Mission loop: investigate → collect evidence → claim → decision → consequence. Historical integrity remains mandatory.
+THE SPICE RACE 1.2 — LOCKED RULES
+1. INQUIRY: mission → investigate → collect evidence → claim → decision → consequence.
+2. EVIDENCE BOOK persists across the campaign.
+3. MAP ALIGNMENT: all terrain, realms, cities, routes, ships and commodities share one SVG coordinate system.
+4. FOCUSED MAPS: Europe, Mediterranean Trade, and Indian Ocean are stable views of the same coordinate board; lesson selects the useful view.
+5. VISUAL CANON: original illustrated historical-strategy aesthetic built inside the SVG geometry; never use generated artwork as the coordinate truth layer.
+6. HISTORICAL INTEGRITY: political regions are teaching reconstructions; documented history remains distinct from student counterfactuals.

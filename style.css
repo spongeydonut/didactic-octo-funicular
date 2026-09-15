@@ -9,3 +9,20 @@
 @media(max-width:700px){.evidence{grid-template-columns:1fr}}
 
 .svgboard{border:3px solid #80683b;border-radius:9px;overflow:hidden;background:#31566a;position:relative}.svgboard svg{width:100%;height:auto;display:block}.svgland{fill:#839168;stroke:#d1c296;stroke-width:1}.svgdesert{fill:#b99c63;opacity:.7}.svgmount{fill:none;stroke:#5b5037;stroke-width:5}.svgcity{fill:#f1c85e;stroke:#2a2113;stroke-width:2;cursor:pointer}.svgcity.need{stroke:#fff0a3;stroke-width:5}.svglabel{fill:#fff8df;font:700 11px Georgia,serif;paint-order:stroke;stroke:#182129;stroke-width:3px}.svgroute{stroke:#dfbd66;stroke-width:3;stroke-dasharray:7 6}.bookCard{background:#efe0b9;color:#241e17;border-left:4px solid #c3943d;padding:6px;margin:5px 0;border-radius:4px;font-size:11px}.eBook{max-height:350px;overflow:auto}
+
+/* REBUILT 1.2 — illustrated SVG strategy-map canon */
+.svgboard{background:radial-gradient(circle at 45% 40%,#3f7085,#274a5c 70%);box-shadow:inset 0 0 60px #1119;border-color:#9a7a3d}
+.svgboard svg{background:transparent}
+.svgland{fill:url(#landGrad);stroke:#d8c89a;stroke-width:1.5}
+.svgdesert{fill:url(#sandGrad);opacity:.8}
+.svgmount{stroke:#51442f;stroke-width:6;filter:url(#softShadow)}
+.svgroute{stroke:#e6c66f;stroke-width:3.5;stroke-dasharray:8 6;filter:url(#routeGlow)}
+.svgcity{fill:#f4cc65;stroke:#372611;stroke-width:2.5;filter:url(#cityShadow)}
+.svgcity.need{stroke:#fff1a5;stroke-width:6}
+.svglabel{font:700 12px Georgia,serif;fill:#fff6d6;stroke:#152029;stroke-width:3.5px}
+.realmArt{opacity:.5;stroke:#3a2d1c;stroke-width:1.5}.realmName{font:700 13px Georgia,serif;fill:#f8ecc7;paint-order:stroke;stroke:#2b2418;stroke-width:4px;letter-spacing:.6px}
+.forest{fill:#355d42;opacity:.8}.hill{fill:#68784f;opacity:.8}.coastGlow{fill:none;stroke:#efe0b2;stroke-width:4;opacity:.16}
+.mapTitle{font:700 21px Georgia,serif;fill:#f6df9e;paint-order:stroke;stroke:#18222a;stroke-width:5px}
+.mapSub{font:italic 11px Georgia,serif;fill:#f4e6c5;paint-order:stroke;stroke:#18222a;stroke-width:3px}
+.shield{stroke:#e7cf8a;stroke-width:1.5}.portIcon{font-size:16px;pointer-events:none}
+.mapTabs{display:flex;gap:5px;margin-bottom:5px}.mapTabs button{background:#223a46;color:#fff;border:1px solid #68757b;border-radius:6px;padding:6px 9px;cursor:pointer}.mapTabs button.active{background:#795d2d;border-color:#e2bd69}
